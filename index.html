@@ -361,6 +361,72 @@
                 background: transparent !important;
                 overflow-x: visible !important;
             }
+
+            /* Responsive Top Bar header adjustments */
+            .top-bar {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                padding: 0.5rem 0.25rem !important;
+            }
+            
+            /* Hide the middle title on mobile */
+            .top-bar > div:nth-child(2) {
+                display: none !important;
+            }
+            
+            .top-bar > div:first-child,
+            .top-bar > div:last-child {
+                flex: unset !important;
+                width: auto !important;
+            }
+
+            /* Theme toggle button styling on mobile */
+            #themeToggle {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.85rem !important;
+                border-radius: 0.5rem !important;
+                white-space: nowrap !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.35rem !important;
+            }
+
+            /* User info layout stacked on mobile */
+            .user-info {
+                flex-direction: column !important;
+                align-items: flex-end !important;
+                gap: 0.2rem !important;
+                padding: 0.4rem 0.75rem !important;
+                border-radius: 0.5rem !important;
+                font-size: 0.85rem !important;
+                background: rgba(15, 23, 42, 0.4) !important;
+                border: 1px solid var(--border-color) !important;
+                display: none;
+            }
+            
+            body.light-mode .user-info {
+                background: rgba(255, 255, 255, 0.8) !important;
+            }
+
+            .user-info span {
+                white-space: nowrap !important;
+            }
+
+            .user-info .btn-text {
+                font-size: 0.8rem !important;
+                color: var(--danger) !important;
+                font-weight: 600 !important;
+            }
+
+            /* Prevent Safari/WebKit native time picker from leaking out of the card */
+            input[type="time"] {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                text-align: center !important;
+            }
             
             /* Convert table to card layout on mobile */
             #scheduleTable thead {
