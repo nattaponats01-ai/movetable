@@ -414,8 +414,9 @@
                 padding-bottom: 0.5rem !important;
                 margin-bottom: 0.25rem;
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 align-items: center;
+                gap: 0.25rem;
             }
             
             #scheduleTable td:first-child::before {
@@ -704,12 +705,147 @@
                 font-size: 14pt !important; 
             }
         }
+
+        /* Light Mode Styling overrides */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --primary: #1d4ed8;
+            --primary-hover: #1e40af;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: rgba(148, 163, 184, 0.3);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+        }
+        
+        body.light-mode #themeToggle {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--border-color);
+            color: var(--text-main);
+        }
+        
+        body.light-mode #themeToggle:hover {
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .user-info {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        body.light-mode .controls-grid {
+            background: rgba(241, 245, 249, 0.6);
+        }
+
+        body.light-mode input {
+            background: #ffffff;
+            color: #0f172a;
+            border-color: rgba(148, 163, 184, 0.5);
+        }
+
+        body.light-mode input:focus {
+            background: #ffffff;
+        }
+
+        body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: none;
+        }
+
+        body.light-mode .table-container {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        body.light-mode th {
+            background: rgba(241, 245, 249, 0.95);
+            color: #475569;
+        }
+
+        body.light-mode td input {
+            background: #ffffff;
+            color: #0f172a;
+            border-color: rgba(148, 163, 184, 0.4);
+        }
+
+        body.light-mode td input:hover, body.light-mode td input:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+        }
+
+        body.light-mode .calc-value {
+            color: #059669;
+        }
+
+        body.light-mode .time-value {
+            color: #1d4ed8;
+        }
+
+        body.light-mode .btn-audit {
+            background: rgba(71, 85, 105, 0.08);
+            color: #475569;
+            border-color: var(--border-color);
+        }
+
+        body.light-mode .btn-audit:hover {
+            background: rgba(71, 85, 105, 0.15);
+            color: #0f172a;
+        }
+
+        body.light-mode .modal-content {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .history-item {
+            background: #f8fafc;
+        }
+
+        body.light-mode #toast {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        @media screen and (max-width: 768px) {
+            body.light-mode #scheduleTable tr {
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            }
+            
+            body.light-mode #scheduleTable tr:hover {
+                background: #ffffff;
+                border-color: var(--primary);
+            }
+            
+            body.light-mode #scheduleTable td:nth-child(5),
+            body.light-mode #scheduleTable td:nth-child(7) {
+                background: rgba(241, 245, 249, 0.8);
+                border-color: rgba(148, 163, 184, 0.2) !important;
+            }
+            
+            body.light-mode .footer-inputs {
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+        }
     </style>
 </head>
 <body>
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
 
     <div class="top-bar" style="max-width: 1500px; margin: 0 auto 1rem auto; display: flex; justify-content: space-between; align-items: center;">
-        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; align-items: center;">
+            <button id="themeToggle" onclick="toggleTheme()" style="background: rgba(30, 41, 59, 0.6); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;">
+                <svg id="themeIcon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+                </svg>
+                <span id="themeText">โหมดสว่าง</span>
+            </button>
+        </div>
         <div style="flex: 1; text-align: center; color: var(--text-muted); font-size: 1rem; font-weight: 500;">
             ระบบคำนวณและบันทึกประวัติ (Server-based)
         </div>
@@ -892,6 +1028,10 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth();
+            
+            // Set up initial theme toggle state
+            const isLight = document.body.classList.contains('light-mode');
+            updateThemeUI(isLight);
         });
 
         // ================= AUTHENTICATION =================
@@ -1037,6 +1177,28 @@
         function logout() {
             localStorage.removeItem('motorcade_user');
             location.reload();
+        }
+
+        // ================= THEME TOGGLE =================
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI(isLight);
+        }
+        
+        function updateThemeUI(isLight) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            if (!icon || !text) return;
+            if (isLight) {
+                text.textContent = 'โหมดมืด';
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`;
+            } else {
+                text.textContent = 'โหมดสว่าง';
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>`;
+            }
         }
 
         // ================= SERVER API =================
