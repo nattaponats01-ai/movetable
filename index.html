@@ -147,6 +147,37 @@
             cursor: pointer;
         }
 
+        select {
+            width: 100%;
+            padding: 0.75rem 2rem 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%2394a3b8" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1.25rem;
+            text-align: center;
+            text-align-last: center;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+
+        body.light-mode select {
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23475569" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important;
+        }
+
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -939,7 +970,14 @@
         <div class="controls-grid">
             <div class="input-group">
                 <label>เวลาเริ่มต้นขบวน (น.)</label>
-                <input type="time" id="startTime" value="09:00" onchange="calculateTable()" required>
+                <div style="display: flex; gap: 0.5rem; align-items: center; width: 100%;">
+                    <select id="startHour" onchange="updateStartTime()" style="flex: 1;">
+                    </select>
+                    <span style="font-weight: bold; color: var(--text-muted);">:</span>
+                    <select id="startMinute" onchange="updateStartTime()" style="flex: 1;">
+                    </select>
+                </div>
+                <input type="hidden" id="startTime" value="09:00">
             </div>
             <div class="input-group">
                 <label>ความเร็ว (กม./ชม.)</label>
@@ -1097,6 +1135,7 @@
         let rowCount = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
+            populateTimeDropdowns();
             checkAuth();
             
             // Set up initial theme toggle state
@@ -1271,6 +1310,47 @@
             }
         }
 
+        // ================= TIME SELECT DROPDOWNS =================
+        function populateTimeDropdowns() {
+            const hourSelect = document.getElementById('startHour');
+            const minuteSelect = document.getElementById('startMinute');
+            if (!hourSelect || !minuteSelect) return;
+            
+            hourSelect.innerHTML = '';
+            minuteSelect.innerHTML = '';
+            
+            for (let h = 0; h < 24; h++) {
+                const hStr = h.toString().padStart(2, '0');
+                hourSelect.add(new Option(hStr, hStr));
+            }
+            
+            for (let m = 0; m < 60; m++) {
+                const mStr = m.toString().padStart(2, '0');
+                minuteSelect.add(new Option(mStr, mStr));
+            }
+            
+            hourSelect.value = '09';
+            minuteSelect.value = '00';
+        }
+        
+        function updateStartTime() {
+            const h = document.getElementById('startHour').value;
+            const m = document.getElementById('startMinute').value;
+            document.getElementById('startTime').value = `${h}:${m}`;
+            calculateTable();
+        }
+        
+        function syncTimeDropdownsFromInput() {
+            const val = document.getElementById('startTime').value || '09:00';
+            const [h, m] = val.split(':');
+            const hourSelect = document.getElementById('startHour');
+            const minuteSelect = document.getElementById('startMinute');
+            if (hourSelect && minuteSelect) {
+                hourSelect.value = h || '09';
+                minuteSelect.value = m || '00';
+            }
+        }
+
         // ================= SERVER API =================
         async function saveToServer() {
             if (!currentUser) return;
@@ -1442,7 +1522,8 @@
             document.getElementById('phaseDistance').value = data.phaseDistance || '';
             document.getElementById('maxSpeed').value = data.maxSpeed || '';
             document.getElementById('speedMultiplier').value = data.speedMultiplier || '';
-            document.getElementById('startTime').value = data.startTime;
+            document.getElementById('startTime').value = data.startTime || '09:00';
+            syncTimeDropdownsFromInput();
             document.getElementById('speed').value = data.speed;
             
             const tbody = document.getElementById('tableBody');
