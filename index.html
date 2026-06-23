@@ -335,7 +335,7 @@
         #toast.show { transform: translateY(0); opacity: 1; }
 
         /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             body {
                 padding: 0.5rem;
             }
@@ -357,14 +357,247 @@
             }
             .table-container {
                 margin-top: 1rem;
+                border: none !important;
+                background: transparent !important;
+                overflow-x: visible !important;
             }
+            
+            /* Convert table to card layout on mobile */
+            #scheduleTable thead {
+                display: none;
+            }
+            
+            #scheduleTable, 
+            #scheduleTable tbody, 
+            #scheduleTable tr {
+                display: block;
+                width: 100% !important;
+            }
+            
+            #scheduleTable tr {
+                background: rgba(30, 41, 59, 0.65);
+                border: 1px solid var(--border-color);
+                border-radius: 1rem;
+                padding: 1.25rem;
+                margin-bottom: 1.25rem;
+                box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                position: relative;
+                transition: all 0.3s ease;
+            }
+            
+            #scheduleTable tr:hover {
+                border-color: rgba(59, 130, 246, 0.4);
+                background: rgba(30, 41, 59, 0.8);
+            }
+            
+            #scheduleTable td {
+                display: block;
+                padding: 0 !important;
+                border: none !important;
+                width: 100% !important;
+                text-align: left !important;
+            }
+            
+            /* Checkpoint index styling as card header */
+            #scheduleTable td:first-child {
+                font-weight: 700;
+                font-size: 1.25rem !important;
+                color: #60a5fa;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.15) !important;
+                padding-bottom: 0.5rem !important;
+                margin-bottom: 0.25rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            #scheduleTable td:first-child::before {
+                content: "จุดตรวจที่ ";
+            }
+            
+            /* Floating delete button in the top right */
+            #scheduleTable td:last-child {
+                position: absolute;
+                top: 1rem;
+                right: 1.25rem;
+                width: auto !important;
+                margin: 0 !important;
+            }
+            
+            #scheduleTable td:last-child .btn-remove {
+                padding: 0.45rem 0.85rem;
+                font-size: 0.9rem !important;
+                border-radius: 0.5rem;
+                background: rgba(239, 68, 68, 0.15);
+            }
+            
+            #scheduleTable td:last-child .btn-remove:hover {
+                background: var(--danger);
+                color: white;
+            }
+            
+            /* Input fields with label prefix */
+            #scheduleTable td:nth-child(2)::before {
+                content: "ชื่อถนน:";
+                display: block;
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+            #scheduleTable td:nth-child(3)::before {
+                content: "จุดตรวจ / สถานที่:";
+                display: block;
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+            #scheduleTable td:nth-child(4)::before {
+                content: "ระยะทางจากจุดที่แล้ว (กิโลเมตร):";
+                display: block;
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+            
+            /* Style input fields for better mobile experience */
+            #scheduleTable td input {
+                padding: 0.75rem !important;
+                font-size: 1.05rem !important;
+                background: rgba(15, 23, 42, 0.7);
+                border-color: rgba(148, 163, 184, 0.35);
+                border-radius: 0.6rem;
+            }
+            
+            #scheduleTable td input:focus {
+                border-color: var(--primary);
+                background: rgba(15, 23, 42, 0.9);
+            }
+            
+            /* Accumulated distance display row */
+            #scheduleTable td:nth-child(5) {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background: rgba(15, 23, 42, 0.45);
+                padding: 0.65rem 0.85rem !important;
+                border-radius: 0.5rem;
+                margin-top: 0.25rem;
+                border: 1px solid rgba(148, 163, 184, 0.1) !important;
+            }
+            #scheduleTable td:nth-child(5)::before {
+                content: "ระยะทางสะสม:";
+                font-size: 0.95rem;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+            #scheduleTable td:nth-child(5) .acc-dist {
+                width: auto !important;
+                text-align: right;
+                font-size: 1.1rem !important;
+            }
+            
+            /* Hidden cells (travel time) */
+            #scheduleTable td:nth-child(6) {
+                display: none !important;
+            }
+            
+            /* Calculated Time display row */
+            #scheduleTable td:nth-child(7) {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background: rgba(15, 23, 42, 0.45);
+                padding: 0.65rem 0.85rem !important;
+                border-radius: 0.5rem;
+                margin-top: 0.25rem;
+                border: 1px solid rgba(148, 163, 184, 0.1) !important;
+            }
+            #scheduleTable td:nth-child(7)::before {
+                content: "เวลาเข้า / ออกจุดตรวจ:";
+                font-size: 0.95rem;
+                color: var(--text-muted);
+                font-weight: 500;
+            }
+            #scheduleTable td:nth-child(7) .time-group {
+                width: auto;
+                align-items: flex-end;
+            }
+            #scheduleTable td:nth-child(7) .time-value {
+                font-size: 1.15rem !important;
+            }
+            
+            /* Remarks column */
+            #scheduleTable td:nth-child(8)::before {
+                content: "หมายเหตุ:";
+                display: block;
+                font-size: 0.9rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+            #scheduleTable td:nth-child(8) .remarks-input {
+                padding: 0.75rem !important;
+                font-size: 1rem !important;
+            }
+            #scheduleTable td:nth-child(8) .remark-display {
+                margin-bottom: 0.2rem;
+                padding-left: 0.25rem;
+            }
+
+            /* Stacked parameters/footer card style */
             .footer-inputs {
+                background: rgba(15, 23, 42, 0.5);
+                border: 1px solid var(--border-color);
+                border-radius: 1rem;
+                padding: 1.25rem !important;
+                margin-top: 1.5rem !important;
+                display: flex;
                 flex-direction: column !important;
-                gap: 0.75rem !important;
+                gap: 1rem !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            .footer-inputs::before {
+                content: "ข้อมูลเพิ่มเติมสำหรับตารางนำขบวน";
+                display: block;
+                font-size: 1.05rem;
+                font-weight: 600;
+                color: #60a5fa;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+                padding-bottom: 0.5rem;
+                margin-bottom: 0.25rem;
             }
             .footer-inputs input, .footer-inputs div {
                 width: 100% !important;
                 min-width: 100% !important;
+            }
+            .footer-inputs input {
+                padding: 0.75rem !important;
+                font-size: 1.05rem !important;
+            }
+            
+            /* Modal layout adjustments */
+            .history-item {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.75rem !important;
+                padding: 1rem !important;
+            }
+            .history-actions {
+                width: 100% !important;
+                justify-content: flex-end !important;
+            }
+            
+            /* Audit Log responsive scroll support */
+            #auditLogsModal table {
+                min-width: 600px !important;
             }
         }
 
@@ -500,7 +733,7 @@
             </div>
             <div class="input-group">
                 <label>ความเร็ว (กม./ชม.)</label>
-                <input type="number" id="speed" min="1" max="120" value="50" placeholder="1-120" oninput="calculateTable()">
+                <input type="number" id="speed" min="1" max="120" value="50" placeholder="1-120" oninput="calculateTable()" inputmode="numeric">
             </div>
         </div>
 
@@ -530,16 +763,16 @@
             <input type="text" id="movementPhase" placeholder="ตอนการเคลื่อนที่" style="flex: 1; min-width: 150px; text-align: center;">
             
             <div style="position: relative; flex: 1.5; min-width: 200px;">
-                <input type="number" id="phaseDistance" placeholder="ระยะต่อระหว่างตอนการเคลื่อนที่" style="text-align: center; width: 100%; padding-right: 2.5rem;">
+                <input type="number" id="phaseDistance" placeholder="ระยะต่อระหว่างตอนการเคลื่อนที่" style="text-align: center; width: 100%; padding-right: 2.5rem;" inputmode="numeric">
                 <span style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none;">นาที</span>
             </div>
             
             <div style="position: relative; flex: 1; min-width: 150px;">
-                <input type="number" id="maxSpeed" placeholder="ความเร็วสูงสุด" style="text-align: center; width: 100%; padding-right: 3.5rem;">
+                <input type="number" id="maxSpeed" placeholder="ความเร็วสูงสุด" style="text-align: center; width: 100%; padding-right: 3.5rem;" inputmode="numeric">
                 <span style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none;">กม./ชม.</span>
             </div>
             
-            <input type="number" step="any" id="speedMultiplier" placeholder="ตัวคูณความเร็ว" style="flex: 1; min-width: 120px; text-align: center;">
+            <input type="number" step="any" id="speedMultiplier" placeholder="ตัวคูณความเร็ว" style="flex: 1; min-width: 120px; text-align: center;" inputmode="decimal">
         </div>
 
         <div class="action-buttons">
@@ -1023,7 +1256,7 @@
                 <td class="text-center">${rowCount}</td>
                 <td><input type="text" class="road-input" value="${road}" placeholder="ชื่อถนน" oninput="calculateTable()"></td>
                 <td><input type="text" class="checkpoint-input" value="${checkpoint}" placeholder="จุดตรวจ" oninput="calculateTable()"></td>
-                <td><input type="number" class="distance-input text-center" value="${distance}" min="0" step="any" placeholder="0" oninput="calculateTable()"></td>
+                <td><input type="number" class="distance-input text-center" value="${distance}" min="0" step="any" placeholder="0" oninput="calculateTable()" inputmode="decimal"></td>
                 <td><span class="calc-value acc-dist">0.00</span></td>
                 <td style="display:none;"><span class="calc-value travel-time">0</span></td>
                 <td>
