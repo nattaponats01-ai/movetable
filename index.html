@@ -739,18 +739,27 @@
             background: rgba(241, 245, 249, 0.6);
         }
 
-        body.light-mode input {
-            background: #ffffff;
-            color: #0f172a;
-            border-color: rgba(148, 163, 184, 0.5);
+        body.light-mode input,
+        body.light-mode select,
+        body.light-mode textarea,
+        body.light-mode #scheduleTable td input,
+        body.light-mode .footer-inputs input {
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border-color: rgba(148, 163, 184, 0.5) !important;
         }
 
-        body.light-mode input:focus {
-            background: #ffffff;
+        body.light-mode input:focus,
+        body.light-mode #scheduleTable td input:focus,
+        body.light-mode .footer-inputs input:focus {
+            background: #ffffff !important;
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+            outline: none !important;
         }
 
         body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: none;
+            filter: none !important;
         }
 
         body.light-mode .table-container {
@@ -760,17 +769,6 @@
         body.light-mode th {
             background: rgba(241, 245, 249, 0.95);
             color: #475569;
-        }
-
-        body.light-mode td input {
-            background: #ffffff;
-            color: #0f172a;
-            border-color: rgba(148, 163, 184, 0.4);
-        }
-
-        body.light-mode td input:hover, body.light-mode td input:focus {
-            background: #ffffff;
-            border-color: var(--primary);
         }
 
         body.light-mode .calc-value {
@@ -815,6 +813,11 @@
             body.light-mode #scheduleTable tr:hover {
                 background: #ffffff;
                 border-color: var(--primary);
+            }
+
+            body.light-mode #scheduleTable td:first-child {
+                color: var(--primary) !important;
+                border-bottom-color: rgba(148, 163, 184, 0.25) !important;
             }
             
             body.light-mode #scheduleTable td:nth-child(5),
