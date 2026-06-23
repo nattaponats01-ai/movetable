@@ -21,6 +21,9 @@ except ImportError:
     HAS_POSTGRES = False
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DATABASE_URL and os.environ.get("RENDER"):
+    DATABASE_URL = "postgresql://neondb_owner:npg_zcAdN3TpV9Cx@ep-icy-mud-ad1cjv06-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
 USE_POSTGRES = HAS_POSTGRES and DATABASE_URL is not None
 
 def get_db_connection():
